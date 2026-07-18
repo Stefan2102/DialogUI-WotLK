@@ -12,6 +12,7 @@ Fork of [Bset's WotLK port](https://github.com/ghbset/DialogUI-WotLK).
 - Long NPC names now truncated with "..." instead of disappearing behind the portrait
 - Button text now renders correctly in WotLK 3.3.5a
 - Centralized color palette in one place
+- Refactored repetitive XML into Lua generation, merged duplicated templates, unified naming conventions
 
 **Removed**
 - Dark mode — light parchment only

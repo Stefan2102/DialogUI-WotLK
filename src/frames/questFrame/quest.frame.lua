@@ -193,6 +193,12 @@ function DQuestFrame_OnLoad()
     if (UISpecialFrames) then
         table.insert(UISpecialFrames, "DQuestFrame");
     end
+    -- Create 32 title buttons dynamically
+    for i = 1, 32 do
+        local prev = (i == 1) and "DCurrentQuestsText" or ("DQuestTitleButton" .. (i - 1))
+        local btn = CreateFrame("Button", "DQuestTitleButton" .. i, DQuestGreetingScrollChildFrame, "DQuestTitleButtonTemplate")
+        btn:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", (i == 1) and -10 or 0, (i == 1) and -20 or -10)
+    end
 end
 
 function DQuestFrame_HideDefaultFrames()

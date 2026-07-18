@@ -1,4 +1,17 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <Frame name="DUIPanelParchmentTemplate" virtual="true">
+        <Size x="512" y="512" />
+        <Anchors>
+            <Anchor point="TOPLEFT" />
+        </Anchors>
+        <Layers>
+            <Layer level="BACKGROUND">
+                <Texture file="Interface\AddOns\DialogUI\src\assets\art\parchment\Parchment">
+                    <Size x="512" y="512" />
+                </Texture>
+            </Layer>
+        </Layers>
+    </Frame>
     <Texture name="DUIPanelScrollBarButton" virtual="true">
         <TexCoords left="0.25" right="0.75" top="0.25" bottom="0.75" />
     </Texture>

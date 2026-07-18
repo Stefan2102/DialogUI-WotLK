@@ -55,7 +55,7 @@ function DialogUI_Config:RefreshVisible()
         elseif (DQuestFrameGreetingPanel and DQuestFrameGreetingPanel:IsVisible()) then DQuestFrameGreetingPanel_OnShow();
         end
     end
-    if (DGossipFrame and DGossipFrame:IsVisible() and DGossipFrameUpdate) then DGossipFrameUpdate(); end
+    if (DGossipFrame and DGossipFrame:IsVisible() and DGossipFrame_Update) then DGossipFrame_Update(); end
     if (DBookFrame and DBookFrame:IsVisible() and DBookFrame_Update) then DBookFrame_Update(); end
 end
 

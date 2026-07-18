@@ -1,20 +1,5 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.blizzard.com/wow/ui/">
-    <Frame name="DQuestFramePanelTemplate" virtual="true">
-        <Size>
-            <AbsDimension x="512" y="512" />
-        </Size>
-        <Anchors>
-            <Anchor point="TOPLEFT" />
-        </Anchors>
-        <Layers>
-            <Layer level="BACKGROUND">
-                <Texture file="Interface\AddOns\DialogUI\src\assets\art\parchment\Parchment">
-                    <Size x="512" y="512" />
-                </Texture>
-            </Layer>
-        </Layers>
-    </Frame>
     <Button name="DQuestItemTemplate" virtual="true">
         <Size>
             <AbsDimension x="147" y="41" />

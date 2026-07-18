@@ -112,7 +112,7 @@
                     </OnLoad>
                 </Scripts>
             </Frame>
-            <Frame name="DQuestFrameRewardPanel" inherits="DQuestFramePanelTemplate" hidden="true">
+            <Frame name="DQuestFrameRewardPanel" inherits="DUIPanelParchmentTemplate" hidden="true">
                 <Frames>
                     <Button name="DQuestFrameCancelButton" inherits="DUIPanelButtonTemplate"
                         text="CANCEL">
@@ -366,7 +366,7 @@
                     </OnShow>
                 </Scripts>
             </Frame>
-            <Frame name="DQuestFrameProgressPanel" inherits="DQuestFramePanelTemplate" hidden="true">
+            <Frame name="DQuestFrameProgressPanel" inherits="DUIPanelParchmentTemplate" hidden="true">
                 <Frames>
                     <Button name="DQuestFrameGoodbyeButton" inherits="DUIPanelButtonTemplate" text="CANCEL">
                         <Size>
@@ -548,7 +548,7 @@
 					</OnShow>
                 </Scripts>
             </Frame>
-            <Frame name="DQuestFrameDetailPanel" inherits="DQuestFramePanelTemplate" hidden="true">
+            <Frame name="DQuestFrameDetailPanel" inherits="DUIPanelParchmentTemplate" hidden="true">
                 <Frames>
                     <Button name="DQuestFrameDeclineButton" inherits="DUIPanelButtonTemplate"
                         text="DECLINE">
@@ -835,7 +835,7 @@
                     </OnUpdate>
                 </Scripts>
             </Frame>
-            <Frame name="DQuestFrameGreetingPanel" inherits="DQuestFramePanelTemplate" hidden="true">
+            <Frame name="DQuestFrameGreetingPanel" inherits="DUIPanelParchmentTemplate" hidden="true">
                 <Frames>
                     <Button name="DQuestFrameGreetingGoodbyeButton" inherits="DUIPanelButtonTemplate"
                         text="GOODBYE">
@@ -938,294 +938,6 @@
                                     </Layer>
                                 </Layers>
                                 <Frames>
-                                    <Button name="DQuestTitleButton1" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DCurrentQuestsText" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="-10" y="-20" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton2" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton1" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton3" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton2" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton4" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton3" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton5" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton4" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton6" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton5" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton7" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton6" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton8" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton7" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton9" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton8" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton10" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton9" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton11" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton10" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton12" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton11" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton13" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton12" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton14" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton13" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton15" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton14" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton16" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton15" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton17" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton16" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton18" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton17" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton19" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton18" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton20" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton19" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton21" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton20" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton22" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton21" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton23" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton22" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton24" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton23" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton25" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton24" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton26" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton25" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton27" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton26" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton28" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton27" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton29" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton28" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton30" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton29" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton31" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton30" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
-                                    <Button name="DQuestTitleButton32" inherits="DQuestTitleButtonTemplate">
-                                        <Anchors>
-                                            <Anchor point="TOPLEFT" relativeTo="DQuestTitleButton31" relativePoint="BOTTOMLEFT">
-                                                <Offset>
-                                                    <AbsDimension x="0" y="-10" />
-                                                </Offset>
-                                            </Anchor>
-                                        </Anchors>
-                                    </Button>
                                 </Frames>
                             </Frame>
                         </ScrollChild>

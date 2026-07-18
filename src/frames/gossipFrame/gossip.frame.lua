@@ -5,6 +5,20 @@ local totalGossipButtons = 0
 
 local OPTION_BG = "Interface\\AddOns\\DialogUI\\src\\assets\\art\\parchment\\OptionBackground-Common";
 
+function DGossipFrame_OnShow()
+    PlaySound("igQuestListOpen");
+    if (StaticPopup_Visible("XP_LOSS")) then
+        StaticPopup_Hide("XP_LOSS");
+    end
+    if (DialogUI_Focus) then DialogUI_Focus:OnShow(DGossipFrame); end
+end
+
+function DGossipFrame_OnHide()
+    PlaySound("igQuestListClose");
+    CloseGossip();
+    if (DialogUI_Focus) then DialogUI_Focus:OnHide(); end
+end
+
 function DGossipFrame_HideDefaultFrames()
     GossipFrameGreetingPanel:Hide()
     GossipNpcNameFrame:Hide()
@@ -27,6 +41,12 @@ function DGossipFrame_OnLoad()
     if (UISpecialFrames) then
         table.insert(UISpecialFrames, "DGossipFrame");
     end
+    -- Create 32 title buttons dynamically
+    for i = 1, 32 do
+        local prev = (i == 1) and "DGossipGreetingText" or ("DGossipTitleButton" .. (i - 1))
+        local btn = CreateFrame("Button", "DGossipTitleButton" .. i, DGossipGreetingScrollChildFrame, "DGossipTitleButtonTemplate")
+        btn:SetPoint("TOPLEFT", prev, "BOTTOMLEFT", (i == 1) and -10 or 0, (i == 1) and -20 or -10)
+    end
 end
 
 function DGossipFrame_OnEvent()
@@ -38,7 +58,7 @@ function DGossipFrame_OnEvent()
                 return;
             end
         end
-        DGossipFrameUpdate();
+        DGossipFrame_Update();
         DialogUI_GossipBindNumberKeys();
     elseif (event == "GOSSIP_CLOSED") then
         DialogUI_GossipRestoreNumberKeys();
@@ -92,15 +112,15 @@ function DGossipTitleButton_OnClick()
     end
 end
 
-function DGossipFrameUpdate()
+function DGossipFrame_Update()
     ClearAllGossipIcons();
     DGossipFrame.buttonIndex = 1;
     totalGossipButtons = 0; -- Reset counter
     
     DGossipGreetingText:SetText(GetGossipText());
-    DGossipFrameAvailableQuestsUpdate(GetGossipAvailableQuests());
-    DGossipFrameActiveQuestsUpdate(GetGossipActiveQuests());
-    DGossipFrameOptionsUpdate(GetGossipOptions());
+    DGossipFrame_AvailableQuestsUpdate(GetGossipAvailableQuests());
+    DGossipFrame_ActiveQuestsUpdate(GetGossipActiveQuests());
+    DGossipFrame_OptionsUpdate(GetGossipOptions());
 
     for i = DGossipFrame.buttonIndex, NUMGOSSIPBUTTONS do
         getglobal("DGossipTitleButton" .. i):Hide();
@@ -126,7 +146,7 @@ function DGossipFrameUpdate()
     DGossipGreetingScrollFrame:UpdateScrollChildRect();
 end
 
-function DGossipFrameAvailableQuestsUpdate(...)
+function DGossipFrame_AvailableQuestsUpdate(...)
     local titleButton
     local titleIndex = 1
 
@@ -172,7 +192,7 @@ function DGossipFrameAvailableQuestsUpdate(...)
     end
 end
 
-function DGossipFrameActiveQuestsUpdate(...)
+function DGossipFrame_ActiveQuestsUpdate(...)
     local titleButton;
     local titleIndex = 1;
     local isCompleteIndex = 1;
@@ -216,7 +236,7 @@ function DGossipFrameActiveQuestsUpdate(...)
     end
 end
 
-function DGossipFrameOptionsUpdate(...)
+function DGossipFrame_OptionsUpdate(...)
     local titleButton
 
     local options = {}
