@@ -4,12 +4,11 @@
 --
 -- Ported in spirit from the modern DialogueUI "Book" module. The underlying
 -- ItemText* API (ITEM_TEXT_BEGIN/READY/CLOSED, ItemTextGetItem/GetText/GetPage/
--- HasNextPage/NextPage/PrevPage, CloseItemText) is unchanged on 3.3.5a, so rather
--- than port the 2000-line retail frame we drive that API directly and render the
--- pages in the addon's own parchment style.
-
--- We take over the readable-text system by silencing Blizzard's ItemTextFrame and
--- handling the events on our own frame instead.
+-- HasNextPage/NextPage/PrevPage, CloseItemText) is unchanged on 3.3.5a, so the
+-- API is driven directly and pages are rendered in the addon's parchment style.
+--
+-- Takes over the readable-text system by silencing Blizzard's ItemTextFrame and
+-- handling the events on a custom frame instead.
 function DBookFrame_DisableBlizzard()
     if (ItemTextFrame) then
         ItemTextFrame:UnregisterAllEvents();
@@ -25,7 +24,7 @@ function DBookFrame_OnLoad()
     this:RegisterEvent("ITEM_TEXT_CLOSED");
     this:RegisterEvent("PLAYER_LOGIN");
     -- Blizzard's ItemTextFrame is created (FrameXML) before addons, so it already
-    -- exists here; silence it now and again at login (covers /reload too).
+    -- exists here; silence it now and again at login (handles /reload as well).
     DBookFrame_DisableBlizzard();
     -- ESC closes the reader (and, via OnHide, the item-text session).
     if (UISpecialFrames) then
@@ -45,7 +44,7 @@ local function DBookStripHTML(text)
     text = string.gsub(text, "</[hH][123]>", "\n\n");
     -- Drop every remaining tag, keeping the inner text.
     text = string.gsub(text, "<[^>]->", "");
-    -- A couple of common entities, just in case.
+    -- Handle common HTML entities.
     text = string.gsub(text, "&[lL][tT];", "<");
     text = string.gsub(text, "&[gG][tT];", ">");
     text = string.gsub(text, "&[aA][mM][pP];", "&");
@@ -59,7 +58,7 @@ end
 
 -- Style a nav button's label directly (explicit font + color) so it never depends
 -- on the shared/disabled font objects, which can render blank. The option-button
--- plate is dark, so ivory text reads on it.
+-- plate is dark, so ivory text remains legible against it.
 local BOOK_BTN_FONT = "Interface\\AddOns\\DialogUI\\src\\assets\\font\\frizqt___cyr.ttf";
 function DBookStyleButton(btn, label)
     btn:SetText(label);
@@ -87,7 +86,6 @@ function DBookFrame_Update()
     end
     DBookPageText:SetText(body);
 
-    -- Color the text.
     SetFontColor(DBookTitle, "DarkBrown");
     SetFontColor(DBookPageText, "DarkBrown");
     SetFontColor(DBookPageNumber, "LightBrown");
@@ -106,9 +104,9 @@ function DBookFrame_Update()
         end
     end
 
-    -- Navigation. Page 1 HIDES Previous (nothing to go back to) rather than
-    -- disabling it, so we never depend on the button template's disabled font.
-    -- Labels are styled explicitly so they stay legible (esp. on the dark plate).
+    -- Page 1 hides Previous (nothing to go back to) rather than
+    -- disabling it, so the button template's disabled font is never relied on.
+    -- Labels are styled explicitly for legibility, especially on the dark plate.
     if (page > 1) then
         DBookPrevButton:Show();
         DBookStyleButton(DBookPrevButton, "Previous");
@@ -140,7 +138,7 @@ function DBookFrame_OnEvent(event)
     end
 
     if (event == "ITEM_TEXT_BEGIN") then
-        -- Belt and braces: make sure the default frame stays down.
+        -- Redundant safeguard: ensure the default frame remains hidden.
         if (ItemTextFrame and ItemTextFrame:IsShown()) then
             HideUIPanel(ItemTextFrame);
         end
@@ -189,7 +187,7 @@ function DBookFrame_OnShow()
     PlaySound("igQuestListOpen");
     if (DBookBackdrop) then
         -- Fade the dimmer in to draw the eye to the page.
-        UIFrameFadeRemoveFrame(DBookBackdrop); -- cancel any pending fade-out
+        UIFrameFadeRemoveFrame(DBookBackdrop); -- Cancel any pending fade-out
         DBookBackdrop:Show();
         DBookBackdrop:SetAlpha(0);
         UIFrameFadeIn(DBookBackdrop, BACKDROP_FADE, 0, 1);

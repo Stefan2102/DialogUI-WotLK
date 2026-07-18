@@ -1,6 +1,6 @@
 -- Smoothly ease the scrollbar toward its target instead of jumping. Driven by an
 -- OnUpdate on the scroll frame, enabled only while a wheel scroll is in flight.
-local SCROLL_SMOOTH_SPEED = 14;   -- higher = snappier (fraction/sec toward target)
+local SCROLL_SMOOTH_SPEED = 14;   -- higher = faster (fraction/sec toward target)
 
 function DScrollFrame_SmoothOnUpdate(self, elapsed)
     self = self or this;
@@ -59,8 +59,8 @@ function DScrollFrame_OnLoad()
 end
 
 function DScrollFrame_OnScrollRangeChanged(scrollrange)
-    -- Content/range changed (e.g. panel switch); drop any in-flight smooth-scroll
-    -- target so we never animate toward a stale position.
+    -- Drop any in-flight smooth-scroll target so animation never targets
+    -- a stale position.
     this.smoothTarget = nil;
     this:SetScript("OnUpdate", nil);
     local scrollbar = getglobal(this:GetName() .. "ScrollBar");
@@ -93,7 +93,6 @@ function DScrollFrame_OnScrollRangeChanged(scrollrange)
         getglobal(scrollbar:GetName() .. "ThumbTexture"):Show();
     end
 
-    -- Hide/show scrollframe borders
     local top = getglobal(this:GetName() .. "Top");
     local bottom = getglobal(this:GetName() .. "Bottom");
     local middle = getglobal(this:GetName() .. "Middle");

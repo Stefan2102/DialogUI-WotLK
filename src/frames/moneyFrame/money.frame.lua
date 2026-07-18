@@ -161,7 +161,6 @@ function DMoneyFrame_SetType(type)
 	DMoneyFrame_UpdateMoney();
 end
 
--- Update the money shown in a money frame
 function DMoneyFrame_UpdateMoney()
 	if ( this.info ) then
 		local money = this.info.UpdateFunc();
@@ -197,7 +196,6 @@ function DMoneyFrame_Update(frameName, money)
 		spacing = MONEY_BUTTON_SPACING_SMALL;
 	end
 
-	-- Set values for each denomination
 	goldButton:SetText(gold);
 	goldButton:SetWidth(goldButton:GetTextWidth() + iconWidth);
 	goldButton:Show();
@@ -208,10 +206,8 @@ function DMoneyFrame_Update(frameName, money)
 	copperButton:SetWidth(copperButton:GetTextWidth() + iconWidth);
 	copperButton:Show();
 
-	-- Store how much money the frame is displaying
 	frame.staticMoney = money;
 
-	-- If not collapsable don't need to continue
 	if ( not info.collapse ) then
 		return;
 	end
@@ -249,7 +245,7 @@ function DMoneyFrame_Update(frameName, money)
 		goldButton:SetPoint("RIGHT", frameName.."SilverButton",	"RIGHT", 0, 0);
 	end
 
-	-- Used if we're not showing lower denominations
+	-- Used when lower denominations are not shown
 	if ( (copper > 0 or showLowerDenominations or info.showSmallerCoins == "Backpack") and not truncateCopper) then
 		-- Exception if showLowerDenominations and fixedWidth
 		if ( showLowerDenominations and info.fixedWidth ) then

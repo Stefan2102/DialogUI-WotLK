@@ -13,7 +13,7 @@ DialogUI_Config.fonts = {
     arial = { name = "Arial Narrow",  file = FONT_DIR .. "ARIALN.ttf" },
 };
 
--- The font objects we restyle, with their base point sizes (from fonts.xml).
+-- Font objects that are restyled, with their base point sizes (from fonts.xml).
 -- fixedFile pins a font that should never follow the face choice (the coin font).
 DialogUI_Config.fontObjects = {
     { obj = "DQuestTitleFont",         base = 18 },
@@ -46,7 +46,7 @@ local function S(key)
 end
 DialogUI_Config.Get = function(_, key) return S(key); end
 
--- Re-run whichever of our frames is visible so new font/scale metrics lay out.
+-- Re-run whichever dialog frame is visible so new font/scale metrics lay out.
 function DialogUI_Config:RefreshVisible()
     if (DQuestFrame and DQuestFrame:IsVisible()) then
         if (DQuestFrameDetailPanel and DQuestFrameDetailPanel:IsVisible()) then DQuestFrameDetailPanel_OnShow();
@@ -80,8 +80,8 @@ function DialogUI_Config:ApplyScale()
 end
 
 function DialogUI_Config:ApplyAnimation()
-    -- The frames gate their text fade on this global; nil left it half-on, so we
-    -- set it explicitly. "1" disables, "0" enables.
+    -- The frames gate their text fade on this global; nil left it half-on,
+    -- so it is set explicitly. "1" disables, "0" enables.
     QUEST_FADING_DISABLE = S("disableAnim") and "1" or "0";
 end
 

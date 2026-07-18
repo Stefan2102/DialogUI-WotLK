@@ -32,7 +32,7 @@ function DGossipFrame_OnLoad()
     DGossipFrame_HideDefaultFrames()
     this:RegisterEvent("GOSSIP_SHOW");
     this:RegisterEvent("GOSSIP_CLOSED");
-    -- Silence Blizzard's default GossipFrame so it never flashes before ours.
+    -- Silence Blizzard's default GossipFrame so it never flashes before the addon frame.
     if (GossipFrame) then
         GossipFrame:UnregisterAllEvents();
     end
@@ -41,7 +41,6 @@ function DGossipFrame_OnLoad()
     if (UISpecialFrames) then
         table.insert(UISpecialFrames, "DGossipFrame");
     end
-    -- Create 32 title buttons dynamically
     for i = 1, 32 do
         local prev = (i == 1) and "DGossipGreetingText" or ("DGossipTitleButton" .. (i - 1))
         local btn = CreateFrame("Button", "DGossipTitleButton" .. i, DGossipGreetingScrollChildFrame, "DGossipTitleButtonTemplate")
@@ -101,7 +100,7 @@ function DGossipFrame_CloseUI()
     end
 end
 
--- Keep original click handler for mouse clicks (unchanged)
+-- Mouse click handler
 function DGossipTitleButton_OnClick()
     if (this.type == "Available") then
         SelectGossipAvailableQuest(this:GetID());
@@ -115,7 +114,7 @@ end
 function DGossipFrame_Update()
     ClearAllGossipIcons();
     DGossipFrame.buttonIndex = 1;
-    totalGossipButtons = 0; -- Reset counter
+    totalGossipButtons = 0;
     
     DGossipGreetingText:SetText(GetGossipText());
     DGossipFrame_AvailableQuestsUpdate(GetGossipAvailableQuests());
@@ -205,7 +204,6 @@ function DGossipFrame_ActiveQuestsUpdate(...)
         end
         titleButton = getglobal("DGossipTitleButton" .. DGossipFrame.buttonIndex);
 
-        -- Add numbering to the text (only for first 9 options)
         local numberedText = (DGossipFrame.buttonIndex <= 9 and (DGossipFrame.buttonIndex .. ". ") or "") .. select(i, ...)
         titleButton:SetText(numberedText);
         totalGossipButtons = totalGossipButtons + 1

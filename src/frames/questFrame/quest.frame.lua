@@ -6,8 +6,8 @@ QUEST_DESCRIPTION_GRADIENT_LENGTH = 30;
 QUEST_DESCRIPTION_GRADIENT_CPS = 40;
 QUESTINFO_FADE_IN = 1;
 
--- Minimal one-shot timer. 3.3.5a has no C_Timer/After, so we drive a tiny
--- OnUpdate queue ourselves. Used to re-check reward sell prices once the client
+-- Minimal one-shot timer. 3.3.5a has no C_Timer/After, so a minimal
+-- OnUpdate queue is used. Re-checks reward sell prices once the client
 -- has cached the item data (GetItemInfo returns nil/0 until then).
 local DAfterFrame = CreateFrame("Frame");
 local DAfterQueue = {};
@@ -121,10 +121,10 @@ local function DQuestButton_IsEnabled(button)
     return button:IsEnabled();
 end
 
--- Vanilla had a global QuestFrame_SetAsLastShown; it was removed in 3.3.5, so we
--- provide our own. It re-anchors the scroll-child spacer beneath the most recently
--- shown element (preserving the spacer's original point/offset) so the scrollframe
--- computes the correct content height.
+-- Vanilla had a global QuestFrame_SetAsLastShown; it was removed in 3.3.5, so
+-- a custom replacement is provided. It re-anchors the scroll-child spacer beneath
+-- the most recently shown element (preserving the spacer's original point/offset)
+-- so the scrollframe computes the correct content height.
 function DQuestFrame_SetAsLastShown(frame, spacerFrame)
     if (not frame or not spacerFrame) then
         return;
@@ -144,11 +144,11 @@ end
 -- Keyboard handling via frame-scoped override bindings instead of
 -- EnableKeyboard()+OnKeyDown: capturing the keyboard would swallow movement keys
 -- (WASD), and 3.3.5 has no SetPropagateKeyboardInput to let them through. Override
--- bindings intercept ONLY the keys we name while the quest frame is shown, leaving
+-- bindings intercept only the bound keys while the quest frame is shown, leaving
 -- movement and everything else untouched, and auto-clear via ClearOverrideBindings.
 --
--- We bind the plain keys SPACE (accept/complete) and ESCAPE (decline/cancel) plus the
--- panel's number keys. Binding plain "SPACE"/"ESCAPE" matches only the unmodified key,
+-- The plain keys SPACE (accept/complete) and ESCAPE (decline/cancel) are bound plus
+-- the panel's number keys. Binding plain "SPACE"/"ESCAPE" matches only the unmodified key,
 -- so Shift/Ctrl/Alt+Space (and any other combo) pass through normally.
 function DQuestFrame_SetKeys(buttonPrefix, count)
     if (not DQuestFrame) then
@@ -182,18 +182,17 @@ function DQuestFrame_OnLoad()
     this:RegisterEvent("QUEST_COMPLETE");
     this:RegisterEvent("QUEST_FINISHED");
     this:RegisterEvent("QUEST_ITEM_UPDATE");
-    -- Silence Blizzard's default QuestFrame so it never flashes its panels for a
-    -- frame before ours takes over (e.g. when handing in a quest). We drive the
-    -- quest API directly, so the default frame isn't needed.
+    -- Silence Blizzard's default QuestFrame so it never flashes its panels
+    -- before the addon frame takes over (e.g. when handing in a quest).
+    -- The quest API is driven directly, so the default frame is not needed.
     if (QuestFrame) then
         QuestFrame:UnregisterAllEvents();
     end
-    -- ESC used to close via the (now silenced) Blizzard frame; register ours so
-    -- ESC still closes it (OnHide calls CloseQuest).
+    -- ESC was handled by the (now silenced) Blizzard frame; register the
+    -- custom frame so ESC still closes it (OnHide calls CloseQuest).
     if (UISpecialFrames) then
         table.insert(UISpecialFrames, "DQuestFrame");
     end
-    -- Create 32 title buttons dynamically
     for i = 1, 32 do
         local prev = (i == 1) and "DCurrentQuestsText" or ("DQuestTitleButton" .. (i - 1))
         local btn = CreateFrame("Button", "DQuestTitleButton" .. i, DQuestGreetingScrollChildFrame, "DQuestTitleButtonTemplate")
@@ -398,12 +397,10 @@ function DQuestFrameProgressItems_Update()
     if (numRequiredItems > 0 or GetQuestMoneyToGet() > 0) then
         DQuestProgressRequiredItemsText:Show();
 
-        -- If there's money required then anchor and display it
         if (GetQuestMoneyToGet() > 0) then
             DMoneyFrame_Update("DQuestProgressRequiredMoneyFrame", GetQuestMoneyToGet());
 
             if (GetQuestMoneyToGet() > GetMoney()) then
-                -- Not enough money
                 DQuestProgressRequiredMoneyText:SetTextColor(0, 0, 0);
                 DSetMoneyFrameColor("DQuestProgressRequiredMoneyFrame", 1.0, 0.1, 0.1);
             else
@@ -414,7 +411,6 @@ function DQuestFrameProgressItems_Update()
             DQuestProgressRequiredMoneyText:Show();
             DQuestProgressRequiredMoneyFrame:Show();
 
-            -- Reanchor required item
             getglobal(questItemName .. 1):ClearAllPoints();
             getglobal(questItemName .. 1):SetPoint("TOPLEFT", "DQuestProgressRequiredMoneyText", "BOTTOMLEFT", 0, -12);
         else
@@ -472,7 +468,7 @@ function DQuestFrameGreetingPanel_OnShow()
     
     local numActiveQuests = GetNumActiveQuests();
     local numAvailableQuests = GetNumAvailableQuests();
-    local buttonIndex = 1; -- Counter for numbering buttons 1-9
+    local buttonIndex = 1;
     
     if (numActiveQuests == 0) then
         DCurrentQuestsText:Hide();
@@ -517,7 +513,6 @@ function DQuestFrameGreetingPanel_OnShow()
             -10, -5);
         for i = (numActiveQuests + 1), (numActiveQuests + numAvailableQuests), 1 do
             local questTitleButton = getglobal("DQuestTitleButton" .. i);
-            -- Add number prefix (1-9) to the quest title
             local questTitle = GetAvailableTitle(i - numActiveQuests);
             if (buttonIndex <= 9) then
                 questTitleButton:SetText(buttonIndex .. ". " .. questTitle);
@@ -697,7 +692,6 @@ function DQuestFrameItems_Update(questState)
         DSetMoneyFrameColor(questState .. "MoneyFrame", mc[1], mc[2], mc[3]);
     end
 
-    -- Hide unused rewards
     for i = totalRewards + 1, MAX_NUM_ITEMS, 1 do
         getglobal(questItemName .. i):Hide();
     end
@@ -724,7 +718,6 @@ function DQuestFrameItems_Update(questState)
             end
             questItem:SetID(i)
             questItem:Show();
-            -- For the tooltip
             questItem.rewardType = "item"
             DQuestFrame_SetAsLastShown(questItem, spacerFrame);
             getglobal(questItemName .. index .. "Name"):SetText(name);
@@ -787,7 +780,6 @@ function DQuestFrameItems_Update(questState)
         rewardsCount = rewardsCount + 1;
         questItem = getglobal(questItemName .. rewardsCount);
         questItem:Show();
-        -- For the tooltip
         questItem.rewardType = "spell";
         SetItemButtonCount(questItem, 0);
         SetItemButtonTexture(questItem, texture);
@@ -821,7 +813,6 @@ function DQuestFrameItems_Update(questState)
         end
         questItemReceiveText:Show();
         DQuestFrame_SetAsLastShown(questItemReceiveText, spacerFrame);
-        -- Setup mandatory rewards
         local index;
         local baseIndex = rewardsCount;
         for i = 1, numQuestRewards, 1 do
@@ -843,11 +834,7 @@ function DQuestFrameItems_Update(questState)
             SetItemButtonCount(questItem, numItems);
             SetItemButtonTexture(questItem, texture);
             if (isUsable) then
-                -- SetItemButtonTextureVertexColor(questItem, 1.0, 1.0, 1.0);
-                -- SetItemButtonNameFrameVertexColor(questItem, 1.0, 1.0, 1.0);
             else
-                -- SetItemButtonTextureVertexColor(questItem, 0.5, 0, 0);
-                -- SetItemButtonNameFrameVertexColor(questItem, 1.0, 0, 0);
             end
 
             if (i > 1) then
@@ -910,7 +897,6 @@ function DQuestFrameDetailPanel_OnUpdate(elapsed)
         PlaySound("WriteQuest");
         if (not DQuestDescription:SetAlphaGradient(this.fadingProgress, QUEST_DESCRIPTION_GRADIENT_LENGTH)) then
             this.fading = nil;
-            -- Show Quest Objectives and Rewards
             if (QUEST_FADING_DISABLE == "0") then
                 UIFrameFadeIn(DTextAlphaDependentFrame, QUESTINFO_FADE_IN, 0, 1);
             else
@@ -958,7 +944,7 @@ local function UpdateQuestIcons()
     for i = 1, numActiveQuests do
         local button = getglobal("DQuestTitleButton" .. i);
         if button and button:IsVisible() then
-            local iconTexture = button:GetRegions(); -- Gets the first region (your texture)
+            local iconTexture = button:GetRegions();
             if iconTexture and iconTexture.SetTexture then
                 iconTexture:SetTexture("Interface\\AddOns\\DialogUI\\src\\assets\\art\\icons\\activeQuestIcon");
                 -- Gold "?" only when the quest is actually complete; otherwise show it
@@ -974,7 +960,7 @@ local function UpdateQuestIcons()
     for i = (numActiveQuests + 1), (numActiveQuests + numAvailableQuests) do
         local button = getglobal("DQuestTitleButton" .. i);
         if button and button:IsVisible() then
-            local iconTexture = button:GetRegions(); -- Gets the first region (your texture)
+            local iconTexture = button:GetRegions();
             if iconTexture and iconTexture.SetTexture then
                 iconTexture:SetTexture("Interface\\AddOns\\DialogUI\\src\\assets\\art\\icons\\availableQuestIcon");
                 -- Available "!" is always full colour.
