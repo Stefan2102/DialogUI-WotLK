@@ -19,6 +19,9 @@ src\colors.lua
 # Shared utilities
 src\utils.lua
 
+# Addon compatibility hooks
+src\compat.lua
+
 
 # Money frame
 src\frames\moneyFrame\money.frame.lua

@@ -50,6 +50,12 @@ end
 
 function DGossipFrame_OnEvent()
     if (event == "GOSSIP_SHOW") then
+        if (DialogUI_ShouldSuppressGossip()) then
+            if (DGossipFrame:IsVisible()) then
+                HideUIPanel(DGossipFrame);
+            end
+            return;
+        end
         if (not DGossipFrame:IsVisible()) then
             ShowUIPanel(DGossipFrame);
             if (not DGossipFrame:IsVisible()) then
