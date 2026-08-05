@@ -5,6 +5,20 @@ local totalGossipButtons = 0
 
 local OPTION_BG = "Interface\\AddOns\\DialogUI\\src\\assets\\art\\parchment\\OptionBackground-Common";
 
+-- Some mods (e.g. Transmog Plus) embed an inline icon tag at the start of
+-- gossip option text, e.g. "|TInterface/ICONS/Ability_Spy:30:30:-18:0|tBack".
+-- The -18 x-offset shoves the label left; extract the tag so it can be shown
+-- as the option's own icon instead, leaving clean text.
+local function ExtractInlineGossipIcon(text)
+    local texturePath = string.match(text, "^|T([^:]+):[^|]*|t")
+    if texturePath then
+        local iconTexture = string.gsub(texturePath, "/", "\\")
+        local cleanText = string.gsub(text, "|T[^|]*|t", "", 1)
+        return iconTexture, cleanText
+    end
+    return nil, text
+end
+
 function DGossipFrame_OnShow()
     PlaySound("igQuestListOpen");
     if (StaticPopup_Visible("XP_LOSS")) then
@@ -64,9 +78,7 @@ function DGossipFrame_OnEvent()
             end
         end
         DGossipFrame_Update();
-        DialogUI_GossipBindNumberKeys();
     elseif (event == "GOSSIP_CLOSED") then
-        DialogUI_GossipRestoreNumberKeys();
         HideUIPanel(DGossipFrame);
     end
 end
@@ -80,20 +92,15 @@ function DGossipSelectOption(buttonIndex)
     for i = 1, NUMGOSSIPBUTTONS do
         local titleButton = getglobal("DGossipTitleButton" .. i)
         if titleButton and titleButton:IsVisible() and titleButton:GetText() and titleButton:GetText() ~= "" then
-            local buttonText = titleButton:GetText()
-            local _, _, numStr = string.find(buttonText, "^(%d+)%.")
-            if numStr then
-                local displayNum = tonumber(numStr)
-                if displayNum == buttonIndex then
-                    if titleButton.type == "Available" then
-                        SelectGossipAvailableQuest(titleButton:GetID())
-                    elseif titleButton.type == "Active" then
-                        SelectGossipActiveQuest(titleButton:GetID())
-                    else
-                        SelectGossipOption(titleButton:GetID())
-                    end
-                    return
+            if titleButton.displayIndex == buttonIndex then
+                if titleButton.type == "Available" then
+                    SelectGossipAvailableQuest(titleButton:GetID())
+                elseif titleButton.type == "Active" then
+                    SelectGossipActiveQuest(titleButton:GetID())
+                else
+                    SelectGossipOption(titleButton:GetID())
                 end
+                return
             end
         end
     end
@@ -165,9 +172,8 @@ function DGossipFrame_AvailableQuestsUpdate(...)
 
         titleButton = getglobal("DGossipTitleButton" .. DGossipFrame.buttonIndex)
 
-        -- Add numbering to the text (only for first 9 options)
-        local numberedText = (DGossipFrame.buttonIndex <= 9 and (DGossipFrame.buttonIndex .. ". ") or "") .. select(i, ...)
-        titleButton:SetText(numberedText)
+        titleButton:SetText(select(i, ...))
+        titleButton.displayIndex = DGossipFrame.buttonIndex
         totalGossipButtons = totalGossipButtons + 1
 
         titleButton:SetID(titleIndex)
@@ -210,8 +216,8 @@ function DGossipFrame_ActiveQuestsUpdate(...)
         end
         titleButton = getglobal("DGossipTitleButton" .. DGossipFrame.buttonIndex);
 
-        local numberedText = (DGossipFrame.buttonIndex <= 9 and (DGossipFrame.buttonIndex .. ". ") or "") .. select(i, ...)
-        titleButton:SetText(numberedText);
+        titleButton:SetText(select(i, ...));
+        titleButton.displayIndex = DGossipFrame.buttonIndex
         totalGossipButtons = totalGossipButtons + 1
 
         titleButton:SetID(titleIndex)
@@ -294,8 +300,9 @@ function DGossipFrame_OptionsUpdate(...)
         end
         titleButton = getglobal("DGossipTitleButton" .. DGossipFrame.buttonIndex)
 
-        local numberedText = (DGossipFrame.buttonIndex <= 9 and (DGossipFrame.buttonIndex .. ". ") or "") .. option.text
-        titleButton:SetText(numberedText)
+        local inlineIconTexture, cleanText = ExtractInlineGossipIcon(option.text)
+        titleButton:SetText(cleanText)
+        titleButton.displayIndex = DGossipFrame.buttonIndex
         totalGossipButtons = totalGossipButtons + 1
 
         titleButton:SetID(option.originalIndex)
@@ -331,7 +338,9 @@ function DGossipFrame_OptionsUpdate(...)
             ["pet"] = "petTrainer.tga",
         }
 
-        if iconType == "gossip" then
+        if inlineIconTexture then
+            texturePath = inlineIconTexture
+        elseif iconType == "gossip" then
             specificType = DetermineGossipIconType(option.text)
 
             if specificType == "petTrainer" then
