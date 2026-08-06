@@ -1,8 +1,6 @@
 ---@diagnostic disable: undefined-global
 NUMGOSSIPBUTTONS = 32;
 
-local totalGossipButtons = 0
-
 local OPTION_BG = "Interface\\AddOns\\DialogUI\\src\\assets\\art\\parchment\\OptionBackground-Common";
 
 -- Some mods (e.g. Transmog Plus) embed an inline icon tag at the start of
@@ -106,13 +104,6 @@ function DGossipSelectOption(buttonIndex)
     end
 end
 
--- Function to close the gossip UI (can be called from anywhere)
-function DGossipFrame_CloseUI()
-    if DGossipFrame:IsVisible() then
-        CloseGossip()
-    end
-end
-
 -- Mouse click handler
 function DGossipTitleButton_OnClick()
     if (this.type == "Available") then
@@ -127,7 +118,6 @@ end
 function DGossipFrame_Update()
     ClearAllGossipIcons();
     DGossipFrame.buttonIndex = 1;
-    totalGossipButtons = 0;
     
     DGossipGreetingText:SetText(GetGossipText());
     DGossipFrame_AvailableQuestsUpdate(GetGossipAvailableQuests());
@@ -174,7 +164,6 @@ function DGossipFrame_AvailableQuestsUpdate(...)
 
         titleButton:SetText(select(i, ...))
         titleButton.displayIndex = DGossipFrame.buttonIndex
-        totalGossipButtons = totalGossipButtons + 1
 
         titleButton:SetID(titleIndex)
         titleButton.type = "Available"
@@ -206,7 +195,6 @@ end
 function DGossipFrame_ActiveQuestsUpdate(...)
     local titleButton;
     local titleIndex = 1;
-    local isCompleteIndex = 1;
 
     -- 3.3.5a: GetGossipActiveQuests returns 4 values per quest
     -- (title, level, isTrivial, isComplete); only the title is used here.
@@ -218,7 +206,6 @@ function DGossipFrame_ActiveQuestsUpdate(...)
 
         titleButton:SetText(select(i, ...));
         titleButton.displayIndex = DGossipFrame.buttonIndex
-        totalGossipButtons = totalGossipButtons + 1
 
         titleButton:SetID(titleIndex)
         titleButton.type = "Active"
@@ -303,7 +290,6 @@ function DGossipFrame_OptionsUpdate(...)
         local inlineIconTexture, cleanText = ExtractInlineGossipIcon(option.text)
         titleButton:SetText(cleanText)
         titleButton.displayIndex = DGossipFrame.buttonIndex
-        totalGossipButtons = totalGossipButtons + 1
 
         titleButton:SetID(option.originalIndex)
         titleButton.type = "Gossip"
